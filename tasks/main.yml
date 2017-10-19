@@ -1,0 +1,31 @@
+---
+# tasks file for apigee-opdk-devportal-postgres-config
+- name: Remove the old dev portal db response file
+  file:
+    path: "{{ opdk_portal_db_config_file }}"
+    state: absent
+  when: manual_devportal_db_response_file is not defined or not manual_devportal_db_response_file
+
+- name: Ensure that a folder exists for the file to be generated
+  file:
+    path: "{{ opdk_portal_db_config_file | dirname }}"
+    state: directory
+
+- name: Construct the dev portal silent-install file
+  template:
+    src: 'devportal-postgres.conf.j2'
+    dest: "{{ opdk_portal_db_config_file }}"
+    force: yes
+    owner: '{{ opdk_user_name }}'
+    group: '{{ opdk_group_name }}'
+    mode: 0655
+  when: manual_devportal_db_response_file is not defined or not manual_devportal_db_response_file
+
+- name: Copy provided silent-install file
+  copy:
+    src: "{{ manual_devportal_db_response_file }}"
+    dest: "{{ opdk_portal_db_config_file }}"
+    owner: '{{ opdk_user_name }}'
+    group: '{{ opdk_group_name }}'
+    mode: 0655
+  when: manual_devportal_db_response_file is defined and manual_devportal_db_response_file
