@@ -1,5 +1,5 @@
-HOSTIP="$(hostname -i)"
+HOSTIP=$(hostname -i)
 MP_POD={{ opdk_mp_pod | default(default_mp_pod) }}
 REGION={{ region }}
-PG_PWD='{{ devportal_pg_pass | default(pg_pass) }}'
+PG_PWD={{ devportal_pg_pass | default(pg_pass) }}
 
