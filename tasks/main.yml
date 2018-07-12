@@ -1,5 +1,17 @@
 ---
 # tasks file for apigee-opdk-devportal-postgres-config
+- name: Determine Region of current node
+  include_tasks: region.yml
+
+- name: Update cache with key and value
+  cache:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+  - { key: 'opdk_installation_config_file', value: '{{ opdk_installer_path }}/edge-response-{{ opdk_version }}-{{ region }}.conf' }
+  - { key: 'opdk_portal_config_file', value: '{{ opdk_installer_path }}/edge-devportal-response-{{ opdk_version }}.conf' }
+  - { key: 'opdk_portal_db_config_file', value: '{{ opdk_installer_path }}/edge-devportal-postgres-response.conf' }
+
 - name: Remove the old dev portal db response file
   file:
     path: "{{ opdk_portal_db_config_file }}"
