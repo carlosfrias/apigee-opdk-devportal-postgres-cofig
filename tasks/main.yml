@@ -1,8 +1,5 @@
 ---
 # tasks file for apigee-opdk-devportal-postgres-config
-- name: Determine Region of current node
-  include_tasks: region.yml
-
 - name: Update cache with key and value
   cache:
     key: "{{ item.key }}"
